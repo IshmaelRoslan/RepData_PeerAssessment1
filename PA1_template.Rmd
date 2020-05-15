@@ -76,7 +76,19 @@ ggplot(times, aes(x=interval, y=steps)) +
 
 
 ## Imputing missing values
+There are `r sum(is.na(activity$steps))` missing values.
 
-
-
+Replace missing values in **activity** with mean from the **times** table.
+```{r missing}
+for (i in 1:nrow(activity)) {
+        if (is.na(activity[i, 1]) == TRUE)
+        {
+                activity[i, 1] <- times[match(activity[i, 3], times$interval), 2]
+        }
+}
+```
+Check that there are now no missing values.
+```{r}
+summary(activity)
+```
 ## Are there differences in activity patterns between weekdays and weekends?
