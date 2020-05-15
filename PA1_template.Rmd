@@ -30,7 +30,7 @@ median <- median(daytotals$steps)
 ```
 Plot histogram with a vertical line showing the median and mean.
 ```{r histogram, fig.height=6,fig.width=10}
-ggplot(daytotals, aes(x = steps)) +
+g0 <- ggplot(daytotals, aes(x = steps)) +
         geom_histogram(bins = 30) +
         geom_vline(xintercept = mean, color = "red") +
         geom_text(aes(
@@ -50,6 +50,7 @@ ggplot(daytotals, aes(x = steps)) +
         ylab("Number of Days") +
         ggtitle("Distribution of Total Daily Steps") +
         theme(plot.title = element_text(hjust = 0.5))
+g0
 ```
 
 The mean and median number of steps per day are **`r round(mean,0)`** and **`r median`** respectively.
@@ -94,5 +95,39 @@ for (i in 1:nrow(imputed)) {
 Check that there are now no missing values.
 ```{r}
 summary(imputed)
+```
+
+Summarize imputed dataset.
+```{r}
+day1 <- group_by(imputed,date)
+daytotals1 <- summarize(day1,steps = sum(steps, na.rm = TRUE))
+
+mean1 <- mean(daytotals1$steps)
+median1 <- median(daytotals1$steps)    
+```
+Generate new plot and original plot.
+```{r imputeplot}
+g2 <- ggplot(daytotals1, aes(x = steps)) +
+        geom_histogram(bins = 30) +
+        geom_vline(xintercept = mean1, color = "red") +
+        geom_text(aes(
+                x = mean1 - 2000,
+                y = 10,
+                label = paste("mean =", round(mean1, 0))
+                
+        ), color = "red") +
+        geom_text(aes(
+                x = median1 + 2000,
+                y = 10,
+                label = paste("median =", round(median1, 0))
+                
+        ), color = "blue") +
+        geom_vline(xintercept = median1, color = "blue") +
+        xlab("Total Daily Steps") +
+        ylab("Number of Days") +
+        ggtitle("Distribution of Total Daily Steps with Imputed missing values") +
+        theme(plot.title = element_text(hjust = 0.5))
+g2
+g0
 ```
 ## Are there differences in activity patterns between weekdays and weekends?
