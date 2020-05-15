@@ -67,11 +67,12 @@ The most active interval is **`r maxinterval`** with an average of **`r maxsteps
 
 Now to plot the time series.
 ```{r timeseries,fig.height=6,fig.width=10}
-ggplot(times, aes(x=interval, y=steps)) +
+g1 <- ggplot(times, aes(x=interval, y=steps)) +
         geom_line() +
         xlab("Interval") +
         ylab("Steps") +
         ggtitle("A Time Series of the Average Number of Steps")
+g1
 ```
 
 
