@@ -19,12 +19,12 @@ activity <- tbl_df(activity)
 
 ## What is mean total number of steps taken per day?
 Summarize the activity table by total steps per day.
-```{r}
+```{r daily}
 day <- group_by(activity,date)
 daytotals <- summarize(day,steps = sum(steps, na.rm = TRUE))
 ```
-Calculate mean and median.
-```{r}
+Calculate mean and median for use in the summary statement.
+```{r dailystats}
 mean <- mean(daytotals$steps)
 median <- median(daytotals$steps)
 ```
@@ -52,10 +52,27 @@ ggplot(daytotals, aes(x = steps)) +
         theme(plot.title = element_text(hjust = 0.5))
 ```
 
-The mean and median number of steps per day are `r round(mean,0)` and `r median` respectively.
+The mean and median number of steps per day are **`r round(mean,0)`** and **`r median`** respectively.
 
 ## What is the average daily activity pattern?
+Summarize the Interval data by mean.
+```{r timedata}
+time <- group_by(activity,interval)
+times <- summarize(time,steps=mean(steps,na.rm=TRUE))
+##Variables to be used in the text below. 
+maxsteps <- round(max(times$steps),0)
+maxinterval <- round(as.numeric(times[which.max(times$steps),1]),0)
+```
+The most active interval is **`r maxinterval`** with an average of **`r maxsteps`** steps.
 
+Now to plot the time series.
+```{r timeseries,fig.height=6,fig.width=10}
+ggplot(times, aes(x=interval, y=steps)) +
+        geom_line() +
+        xlab("Interval") +
+        ylab("Steps") +
+        ggtitle("A Time Series of the Average Number of Steps")
+```
 
 
 ## Imputing missing values
