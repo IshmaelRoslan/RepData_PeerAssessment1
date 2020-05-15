@@ -12,7 +12,7 @@ library(ggplot2)
 ## Loading and preprocessing the data
 Download and read files
 ```{r read}
-activity <- read.csv(unz("activity.zip", "activity.csv"), colClasses = c("integer","character","integer"))
+activity <- read.csv(unz("activity.zip", "activity.csv"), colClasses = c("double","character","double"))
 activity$date <- as.Date(activity$date, "%Y-%m-%d")
 activity <- tbl_df(activity)
 ```
