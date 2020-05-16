@@ -46,7 +46,7 @@ abline(v=median0, col="blue")
 text(median0+2000,20,paste("median =", median0),col="blue")
 ```
 
-The mean and median number of steps per day are **`r mean0`** and **`r median0`** respectively.
+The mean and median number of steps per day are **`r toString(mean0)`** and **`r toString(median0)`** respectively.
 
 ## What is the average daily activity pattern?
 Summarize the Interval data by mean.
@@ -111,8 +111,9 @@ hist(
 abline(v=mean1, col="red")
 text(mean1-2500,20,paste("mean =", mean1),col="red")
 abline(v=median1, col="blue")
-text(median1+2500,20,paste("median =", median1),col="blue")
+text(median1+2400,20,paste("median =", median1),col="blue")
 ```
-The mean and median number of steps per day are **`r mean1`** and **`r median1`** respectively.
+The mean and median number of steps per day are **`r toString(mean1)`** and **`r toString(median1)`** respectively.
+
 
 ## Are there differences in activity patterns between weekdays and weekends?
