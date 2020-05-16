@@ -12,7 +12,9 @@ library(ggplot2)
 ## Loading and preprocessing the data
 Download and read files
 ```{r read}
-activity <- read.csv(unz("activity.zip", "activity.csv"), colClasses = c("double","character","double"))
+activity <-
+  read.csv(unz("activity.zip", "activity.csv"),
+           colClasses = c("double", "character", "double"))
 activity$date <- as.Date(activity$date, "%Y-%m-%d")
 activity <- tbl_df(activity)
 ```
@@ -20,40 +22,31 @@ activity <- tbl_df(activity)
 ## What is mean total number of steps taken per day?
 Summarize the activity table by total steps per day.
 ```{r daily}
-day <- group_by(activity,date)
-daytotals <- summarize(day,steps = sum(steps, na.rm = TRUE))
+day0 <- group_by(activity, date) %>%
+        summarize(steps = sum(steps, na.rm = TRUE))
 ```
 Calculate mean and median for use in the summary statement.
 ```{r dailystats}
-mean <- mean(daytotals$steps)
-median <- median(daytotals$steps)
+mean0 <- mean(day0$steps)
+median0 <- median(day0$steps)
 ```
 Plot histogram with a vertical line showing the median and mean.
-```{r histogram, fig.height=6,fig.width=10}
-g0 <- ggplot(daytotals, aes(x = steps)) +
-        geom_histogram(bins = 30) +
-        geom_vline(xintercept = mean, color = "red") +
-        geom_text(aes(
-                x = mean - 2000,
-                y = 10,
-                label = paste("mean =", round(mean, 0))
-                
-        ), color = "red") +
-        geom_text(aes(
-                x = median + 2000,
-                y = 10,
-                label = paste("median =", round(median, 0))
-                
-        ), color = "blue") +
-        geom_vline(xintercept = median, color = "blue") +
-        xlab("Total Daily Steps") +
-        ylab("Number of Days") +
-        ggtitle("Distribution of Total Daily Steps") +
-        theme(plot.title = element_text(hjust = 0.5))
-g0
+```{r histogram0, fig.height=6,fig.width=10}
+hist(
+        day0$steps,
+        breaks = 5,
+        col = "green",
+        main = "Distribution of Total Daily Steps",
+        xlab = "Total Daily Steps",
+        ylab = "Number of Days"
+)
+abline(v=mean0, col="red")
+text(mean0-1000,20,paste("mean =", round(mean0, 0)),col="red")
+abline(v=median0, col="blue")
+text(median0+1000,20,paste("median =", round(median0, 0)),col="blue")
 ```
 
-The mean and median number of steps per day are **`r round(mean,0)`** and **`r median`** respectively.
+The mean and median number of steps per day are **`r round(mean0,0)`** and **`r median0`** respectively.
 
 ## What is the average daily activity pattern?
 Summarize the Interval data by mean.
@@ -128,6 +121,6 @@ g2 <- ggplot(daytotals1, aes(x = steps)) +
         ggtitle("Distribution of Total Daily Steps with Imputed missing values") +
         theme(plot.title = element_text(hjust = 0.5))
 g2
-g0
 ```
+
 ## Are there differences in activity patterns between weekdays and weekends?
