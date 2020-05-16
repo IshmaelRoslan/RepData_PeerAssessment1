@@ -115,5 +115,6 @@ text(median1+2400,20,paste("median =", median1),col="blue")
 ```
 The mean and median number of steps per day are **`r toString(mean1)`** and **`r toString(median1)`** respectively.
 
+The effect of imputing missing values was to raise the mean by **`r toString(mean1-mean0)`** and the median by **`r toString(median1-median0)`**. The mean and median are now equal due to the method by which missing values were imputed.
 
 ## Are there differences in activity patterns between weekdays and weekends?
