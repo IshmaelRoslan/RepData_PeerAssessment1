@@ -27,8 +27,8 @@ day0 <- group_by(activity, date) %>%
 ```
 Calculate mean and median for use in the summary statement.
 ```{r dailystats}
-mean0 <- mean(day0$steps)
-median0 <- median(day0$steps)
+mean0 <- round(mean(day0$steps),0)
+median0 <- round(median(day0$steps),0)
 ```
 Plot histogram with a vertical line showing the median and mean.
 ```{r histogram0, fig.height=6,fig.width=10}
@@ -41,12 +41,12 @@ hist(
         ylab = "Number of Days"
 )
 abline(v=mean0, col="red")
-text(mean0-1000,20,paste("mean =", round(mean0, 0)),col="red")
+text(mean0-2000,20,paste("mean =", mean0),col="red")
 abline(v=median0, col="blue")
-text(median0+1000,20,paste("median =", round(median0, 0)),col="blue")
+text(median0+2000,20,paste("median =", median0),col="blue")
 ```
 
-The mean and median number of steps per day are **`r round(mean0,0)`** and **`r median0`** respectively.
+The mean and median number of steps per day are **`r mean0`** and **`r median0`** respectively.
 
 ## What is the average daily activity pattern?
 Summarize the Interval data by mean.
@@ -92,35 +92,27 @@ summary(imputed)
 
 Summarize imputed dataset.
 ```{r}
-day1 <- group_by(imputed,date)
-daytotals1 <- summarize(day1,steps = sum(steps, na.rm = TRUE))
+day1 <- group_by(imputed,date) %>%
+summarize(steps = sum(steps, na.rm = TRUE))
 
-mean1 <- mean(daytotals1$steps)
-median1 <- median(daytotals1$steps)    
+mean1 <- round(mean(day1$steps),0)
+median1 <- round(median(day1$steps),0)
 ```
 Generate new plot and original plot.
-```{r imputeplot}
-g2 <- ggplot(daytotals1, aes(x = steps)) +
-        geom_histogram(bins = 30) +
-        geom_vline(xintercept = mean1, color = "red") +
-        geom_text(aes(
-                x = mean1 - 2000,
-                y = 10,
-                label = paste("mean =", round(mean1, 0))
-                
-        ), color = "red") +
-        geom_text(aes(
-                x = median1 + 2000,
-                y = 10,
-                label = paste("median =", round(median1, 0))
-                
-        ), color = "blue") +
-        geom_vline(xintercept = median1, color = "blue") +
-        xlab("Total Daily Steps") +
-        ylab("Number of Days") +
-        ggtitle("Distribution of Total Daily Steps with Imputed missing values") +
-        theme(plot.title = element_text(hjust = 0.5))
-g2
+```{r imputeplot,fig.height=6,fig.width=10}
+hist(
+        day1$steps,
+        breaks = 5,
+        col = "green",
+        main = "Distribution of Total Daily Steps (with Imputed Values)",
+        xlab = "Total Daily Steps",
+        ylab = "Number of Days"
+)
+abline(v=mean1, col="red")
+text(mean1-2500,20,paste("mean =", mean1),col="red")
+abline(v=median1, col="blue")
+text(median1+2500,20,paste("median =", median1),col="blue")
 ```
+The mean and median number of steps per day are **`r mean1`** and **`r median1`** respectively.
 
 ## Are there differences in activity patterns between weekdays and weekends?
