@@ -78,6 +78,7 @@ Replace missing values in **imputed** with mean from the **times** table.
 ```{r impute}
 imputed <- read.csv(unz("activity.zip", "activity.csv"),
                     colClasses = c("double", "character", "double"))
+imputed$date <- as.Date(imputed$date, "%Y-%m-%d")
 for (i in 1:nrow(imputed)) {
         if (is.na(imputed[i, 1]) == TRUE)
         {
